@@ -10,12 +10,22 @@
 # Date Last Modified:
 
 import sys
+import math
+from tkinter import Spinbox
+
+def isPrime(n):
+    for i in range(2,int(n**0.5)+1):
+        if n%i==0:
+            return False
+        
+    return True
 
 # Input: n is an odd integer between 1 and 100
 # Output: returns a 2-D list representing a spiral
 #         if n is even add one to n
-def create_spiral( n ):
+def create_spiral( dimension ):
     pass
+    
 
 # Input: spiral is a 2-D list and n is an integer
 # Output: returns an integer that is the sum of the 
@@ -31,7 +41,7 @@ def main():
     # print the result
     input_data = sys.stdin.read()
     data_list = list(input_data.split())
-    create_spiral( data_list[0])
+    create_spiral( int(data_list[0]))
 
 if __name__ == "__main__":
     main()
