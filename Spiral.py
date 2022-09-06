@@ -24,9 +24,27 @@ def isPrime(n):
 # Output: returns a 2-D list representing a spiral
 #         if n is even add one to n
 def create_spiral( dimension ):
-    pass
     
+    spiral_list = []
+    for row in range(dimension):
+        spiral_row = []
+        for col in range(dimension):
+            spiral_row.append(0)
+        spiral_list.append(spiral_row)
+            
 
+    x_location = math.ceil( dimension / 2 )
+    y_location = math.ceil( dimension / 2 )
+
+    for count in range(1, dimension ** 2):
+        
+        if count == 1:
+            spiral_list[x_location][y_location] = count
+        else:
+            pass
+
+    print(spiral_list)
+ 
 # Input: spiral is a 2-D list and n is an integer
 # Output: returns an integer that is the sum of the 
 #         numbers adjacent to n in the spiral
