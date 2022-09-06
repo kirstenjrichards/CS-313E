@@ -1,6 +1,6 @@
 # File: Sprial.py
 # Description:
-# Student Name:
+# Student Name: 
 # Student UT EID:
 # Partner Name:
 # Partner UT EID:
@@ -9,22 +9,18 @@
 # Date Created:
 # Date Last Modified:
 
+from re import X
 import sys
 import math
 from tkinter import Spinbox
-
-def isPrime(n):
-    for i in range(2,int(n**0.5)+1):
-        if n%i==0:
-            return False
-        
-    return True
+from collections import deque
 
 # Input: n is an odd integer between 1 and 100
 # Output: returns a 2-D list representing a spiral
 #         if n is even add one to n
 def create_spiral( dimension ):
     
+    # The below block of code creates a 2d list filled with 0's with the given paremeter dimension
     spiral_list = []
     for row in range(dimension):
         spiral_row = []
@@ -32,16 +28,35 @@ def create_spiral( dimension ):
             spiral_row.append(0)
         spiral_list.append(spiral_row)
             
+    # The below constants set up the center of the spiral as the starting point
+    x_location = math.ceil( dimension // 2 )
+    y_location = math.ceil( dimension // 2 )
 
-    x_location = math.ceil( dimension / 2 )
-    y_location = math.ceil( dimension / 2 )
+    radius = 1 
+    step = 0
+    times = 0
+    count = 1
 
-    for count in range(1, dimension ** 2):
-        
-        if count == 1:
-            spiral_list[x_location][y_location] = count
-        else:
-            pass
+    # The below block of code sets up a dictionary for the corresponding coordinate adjustments and what direction the spiral is unfurling 
+    directions = {"up": (-1, 0), "right": (0, 1), "down": (1,0), "left": (0, -1)}
+    order = deque(["right", "down", "left", "up"])
+    direction = directions["right"]
+
+    # The below block of code is designed to iterate throughout the matrix updating each value
+    for num in range(dimension ** 2):
+        spiral_list[x_location][y_location] = count
+        count += 1 
+        x_location += direction[0]
+        y_location += direction[1]
+        step += 1 
+        if step == radius:
+            step = 0
+            order.rotate(-1)
+            direction = directions[order[0]]
+            times += 1
+            if times == 2:
+                times = 0
+                radius += 1 
 
     print(spiral_list)
  
