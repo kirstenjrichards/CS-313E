@@ -12,7 +12,6 @@
 from re import X
 import sys
 import math
-from tkinter import Spinbox
 from collections import deque
 
 # Input: n is an odd integer between 1 and 100
@@ -66,37 +65,40 @@ def create_spiral( dimension ):
 #         if n is outside the range return 0
 def sum_adjacent_numbers ( spiral, n ):
      sum = 0 
+     x = 0 
+     y = 0
      for i in range(int(data_list[0])):
         for j in range(int(data_list[0])):
+            print(n,i,j,spiral[i][j])
             if n == spiral[i][j]:
-                x = i 
-                y = j 
+                #x = i 
+               # y = j 
      
-     if x != 0 and y != 0:
-        sum = sum + spiral[(x-1)][(y-1)]
+     ###if x != 0 and y != 0:
+        ###sum = sum + spiral[(x-1)][(y-1)]
      
-     if y != 0:
-        sum = sum + spiral[(x)][(y-1)]
+     ###if y != 0:
+       ### sum = sum + spiral[(x)][(y-1)]
      
-     if y != 0 and x != data_list[0]: 
-        sum = sum + spiral[(x+1)][(y-1)]
+    ### if y != 0 and x != data_list[0]: 
+      ###  sum = sum + spiral[(x+1)][(y-1)]
 
-     if x != 0:
-        sum = sum + spiral[(x-1)][(y)]
+     ###if x != 0:
+      ###  sum = sum + spiral[(x-1)][(y)]
 
-     if x != data_list[0]:
-        sum = sum + spiral[(x+1)][(y)]
+     ###if x != data_list[0]:
+       ### sum = sum + spiral[(x+1)][(y)]
    
-     if x != 0 and y != data_list[0]:
-        sum = sum + spiral[(x-1)(y+1)]
+     ###if x != 0 and y != data_list[0]:
+        ###sum = sum + spiral[(x-1)(y+1)]
       
-     if y != data_list[0]:
-         sum = sum + spiral[(x)][(y+1)]
+     ###if y != data_list[0]:
+       ###  sum = sum + spiral[(x)][(y+1)]
      
-     if x != 0 and y != data_list[0]:
-        sum = sum + spiral[(x+1)(y+1)]
+     ###if x != 0 and y != data_list[0]:
+       ### sum = sum + spiral[(x+1)(y+1)]###
     
-     return sum 
+     #Return sum 
      
    
 
@@ -116,6 +118,7 @@ def main():
         if data_num == 0:
             pass
         else:
+            print(data_list[data_num])
             return_sum_list.append(sum_adjacent_numbers(data_spiral, data_list[data_num]))
 
     print(return_sum_list)
