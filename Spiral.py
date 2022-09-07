@@ -1,5 +1,6 @@
 # File: Sprial.py
-# Description:
+# Description: This program is designed to take in an input file, use the first line to as dimensions for an Ulma spiral, then calculate the surrounding numbers of
+# remaining line numbers
 # Student Name: Kirsten Richards
 # Student UT EID: KJR2599
 # Partner Name: Steven Campbell
@@ -12,13 +13,15 @@
 from re import X
 import sys
 import math
-from tkinter import Spinbox
 from collections import deque
 
 # Input: n is an odd integer between 1 and 100
 # Output: returns a 2-D list representing a spiral
 #         if n is even add one to n
 def create_spiral( dimension ):
+
+    if dimension % 2 == 0:
+        dimension += 1 
     
     # The below block of code creates a 2d list filled with 0's with the given paremeter dimension
     spiral_list = []
@@ -64,37 +67,49 @@ def create_spiral( dimension ):
 # Output: returns an integer that is the sum of the 
 #         numbers adjacent to n in the spiral
 #         if n is outside the range return 0
-def sum_adjacent_numbers ( spiral, n ):
+def sum_adjacent_numbers ( spiral, n):
+
+     if int(n) > (dimension ** 2) or int(n) < 1:
+         return 0
+
      sum = 0 
+     # print(spiral)
+     x = 0 
+     y = 0
      for i in range(int(data_list[0])):
         for j in range(int(data_list[0])):
-            if n == spiral[i][j]:
+            # print(n,i,j,spiral[i][j])
+            if int(n) == int(spiral[i][j]):
+                # print("hi")
                 x = i 
                 y = j 
      
+     # print(x,y)
+     # print(sum)
      if x != 0 and y != 0:
         sum = sum + spiral[(x-1)][(y-1)]
-     
+     # print(sum)
+
      if y != 0:
-        sum = sum + spiral[(x)][(y-1)]
-     
-     if y != 0 and x != data_list[0]: 
-        sum = sum + spiral[(x+1)][(y-1)]
+       sum = sum + spiral[(x)][(y-1)]
+     # print(sum)
+     if y != 0 and x < int(data_list[0]) - 1: 
+      sum = sum + spiral[(x+1)][(y-1)]
 
      if x != 0:
-        sum = sum + spiral[(x-1)][(y)]
+      sum = sum + spiral[(x-1)][(y)]
 
-     if x != data_list[0]:
-        sum = sum + spiral[(x+1)][(y)]
+     if x != int(data_list[0]) - 1 :
+       sum = sum + spiral[(x+1)][(y)]
    
-     if x != 0 and y != data_list[0]:
-        sum = sum + spiral[(x-1)(y+1)]
+     if x != 0 and y != int(data_list[0]) - 1:
+        sum = sum + spiral[(x-1)][(y+1)]
       
-     if y != data_list[0]:
-         sum = sum + spiral[(x)][(y+1)]
+     if y != int(data_list[0]) - 1:
+        sum = sum + spiral[(x)][(y+1)]
      
-     if x != 0 and y != data_list[0]:
-        sum = sum + spiral[(x+1)(y+1)]
+     if x != 0 and y != int(data_list[0]) - 1:
+        sum = sum + spiral[(x+1)][(y+1)]
     
      return sum 
      
@@ -106,12 +121,16 @@ def main():
     input_data = sys.stdin.read()
     global data_list
     data_list = list(input_data.split())
+    global dimension 
+    dimension = int(data_list[0])
     data_spiral = create_spiral( int(data_list[0]))
+    # print(data_spiral)
     return_sum_list = []
     for data_num in range(len(data_list)):
         if data_num == 0:
             pass
         else:
+            # print(data_list[data_num])
             return_sum_list.append(sum_adjacent_numbers(data_spiral, data_list[data_num]))
 
     print(return_sum_list)
