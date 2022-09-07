@@ -98,10 +98,6 @@ def sum_adjacent_numbers ( spiral, n ):
     
      return sum 
      
-   
-
-     
-
 def main():
     # read the input file 
     # create the spiral
