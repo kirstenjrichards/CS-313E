@@ -20,6 +20,7 @@ from collections import deque
 #         if n is even add one to n
 def create_spiral( dimension ):
 
+    # validation code to make sure the dimension is odd if not adds 1 to make it odd
     if dimension % 2 == 0:
         dimension += 1 
     
@@ -86,30 +87,33 @@ def sum_adjacent_numbers ( spiral, n):
      
      # print(x,y)
      # print(sum)
-     if x != 0 and y != 0:
-        sum = sum + spiral[(x-1)][(y-1)]
-     # print(sum)
+     # up
 
-     if y != 0:
-       sum = sum + spiral[(x)][(y-1)]
-     # print(sum)
-     if y != 0 and x < int(data_list[0]) - 1: 
-      sum = sum + spiral[(x+1)][(y-1)]
-
+     # the below block of code is designed to count up all the adjacent cells sorrounding the target cell
      if x != 0:
-      sum = sum + spiral[(x-1)][(y)]
-
-     if x != int(data_list[0]) - 1 :
-       sum = sum + spiral[(x+1)][(y)]
-   
+         sum += spiral[x-1][y]
+     # up/right
      if x != 0 and y != int(data_list[0]) - 1:
-        sum = sum + spiral[(x-1)][(y+1)]
-      
+         sum += spiral[x-1][y+1]
+     # right
      if y != int(data_list[0]) - 1:
-        sum = sum + spiral[(x)][(y+1)]
-     
-     if x != 0 and y != int(data_list[0]) - 1:
-        sum = sum + spiral[(x+1)][(y+1)]
+         sum += spiral[x][y+1]
+     # right/down
+     if x != int(data_list[0]) - 1 and y != int(data_list[0]) - 1:
+         sum += spiral[x+1][y+1]
+     # down
+     if x != int(data_list[0]) - 1:
+         sum += spiral[x+1][y]
+     # down/left
+     if x != int(data_list[0]) - 1 and y != 0:
+         sum += spiral[x+1][y-1]
+     # left
+     if y != 0:
+         sum += spiral[x][y-1]
+     # up/left
+     if x != 0 and y != 0:
+         sum += spiral[x-1][y-1]
+    
     
      return sum 
      
@@ -118,13 +122,19 @@ def main():
     # create the spiral
     # add the adjacent numbers 
     # print the result
+
+    # the below block of code is designed to take the input file and split each line into a list for data extraction
     input_data = sys.stdin.read()
     global data_list
     data_list = list(input_data.split())
+
+    # the below block of code is designed to create the spiral and set the dimension of the spiral for use within the file
     global dimension 
     dimension = int(data_list[0])
     data_spiral = create_spiral( int(data_list[0]))
     # print(data_spiral)
+
+    # the below block of code is designed to call the adjancent numbers function by iterating over the input file line by line
     return_sum_list = []
     for data_num in range(len(data_list)):
         if data_num == 0:
@@ -133,8 +143,14 @@ def main():
             # print(data_list[data_num])
             return_sum_list.append(sum_adjacent_numbers(data_spiral, data_list[data_num]))
 
-    print(return_sum_list)
-
+    # dimension = 15
+    # test_spiral = create_spiral(15)
+    # print(test_spiral)
+    # return_sum_list.append(sum_adjacent_numbers(test_spiral, 193))
+    
+    # the below for statement is designed to convert the return list into a print line statement for each value
+    for return_num in range(len(return_sum_list)):
+        print(return_sum_list[return_num])
 
 
 if __name__ == "__main__":
