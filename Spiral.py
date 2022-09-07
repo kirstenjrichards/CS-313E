@@ -1,9 +1,9 @@
 # File: Sprial.py
 # Description:
-# Student Name: 
+# Student Name: Kirsten Richards
 # Student UT EID:
-# Partner Name:
-# Partner UT EID:
+# Partner Name: Steven Campbell
+# Partner UT EID: SWC776
 # Course Name: CS 313E
 # Unique Number:
 # Date Created:
@@ -75,6 +75,13 @@ def main():
     input_data = sys.stdin.read()
     data_list = list(input_data.split())
     create_spiral( int(data_list[0]))
+    return_sum_list = []
+    for data_num in range(1,len(data_list) - 1):
+        return_sum_list.append(sum_adjacent_numbers(data_list[data_num]))
+
+    print(return_sum_list)
+
+
 
 if __name__ == "__main__":
     main()
