@@ -1,13 +1,13 @@
 # File: Sprial.py
 # Description:
 # Student Name: Kirsten Richards
-# Student UT EID:
+# Student UT EID: KJR2599
 # Partner Name: Steven Campbell
 # Partner UT EID: SWC776
 # Course Name: CS 313E
-# Unique Number:
-# Date Created:
-# Date Last Modified:
+# Unique Number: 52520
+# Date Created: September 1, 2022
+# Date Last Modified: September 7, 2022
 
 from re import X
 import sys
