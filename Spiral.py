@@ -58,7 +58,7 @@ def create_spiral( dimension ):
                 times = 0
                 radius += 1 
 
-    print(spiral_list)
+    return spiral_list
  
 # Input: spiral is a 2-D list and n is an integer
 # Output: returns an integer that is the sum of the 
@@ -66,42 +66,41 @@ def create_spiral( dimension ):
 #         if n is outside the range return 0
 def sum_adjacent_numbers ( spiral, n ):
      sum = 0 
-     for i in range(data_list[0]):
-        for j in range(data_list[0]):
+     for i in range(int(data_list[0])):
+        for j in range(int(data_list[0])):
             if n == spiral[i][j]:
                 x = i 
                 y = j 
-    
+     
      if x != 0 and y != 0:
         sum = sum + spiral[(x-1)][(y-1)]
+     
      if y != 0:
-        sum = sum + spriral[(x)][(y-1)]
-     if y != 0 and x != data_list[0]: #last column 
+        sum = sum + spiral[(x)][(y-1)]
+     
+     if y != 0 and x != data_list[0]: 
         sum = sum + spiral[(x+1)][(y-1)]
+
      if x != 0:
         sum = sum + spiral[(x-1)][(y)]
+
      if x != data_list[0]:
         sum = sum + spiral[(x+1)][(y)]
-     #(down, left)
+   
      if x != 0 and y != data_list[0]:
         sum = sum + spiral[(x-1)(y+1)]
-     # (down), 
-     if y != 0:
-         sum = sum + spriral[(x)][(y+1)]
-     # (down, right)
-     if x != 0 and y != 0:
+      
+     if y != data_list[0]:
+         sum = sum + spiral[(x)][(y+1)]
+     
+     if x != 0 and y != data_list[0]:
         sum = sum + spiral[(x+1)(y+1)]
+    
      return sum 
      
-
-
-
-    #find x,y coordinates of number 
-    #find !(left, up), !(up) !(up, right), !(left), !(right), (down, left), (down), (down, right)
-    #find index of given number n 
    
 
-     pass
+     
 
 def main():
     # read the input file 
@@ -109,11 +108,15 @@ def main():
     # add the adjacent numbers 
     # print the result
     input_data = sys.stdin.read()
+    global data_list
     data_list = list(input_data.split())
-    create_spiral( int(data_list[0]))
+    data_spiral = create_spiral( int(data_list[0]))
     return_sum_list = []
-    for data_num in range(1,len(data_list) - 1):
-        return_sum_list.append(sum_adjacent_numbers(data_list[data_num]))
+    for data_num in range(len(data_list)):
+        if data_num == 0:
+            pass
+        else:
+            return_sum_list.append(sum_adjacent_numbers(data_spiral, data_list[data_num]))
 
     print(return_sum_list)
 
