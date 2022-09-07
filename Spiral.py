@@ -58,7 +58,7 @@ def create_spiral( dimension ):
                 times = 0
                 radius += 1 
 
-    print(spiral_list)
+    return spiral_list
  
 # Input: spiral is a 2-D list and n is an integer
 # Output: returns an integer that is the sum of the 
@@ -74,10 +74,13 @@ def main():
     # print the result
     input_data = sys.stdin.read()
     data_list = list(input_data.split())
-    create_spiral( int(data_list[0]))
+    data_spiral = create_spiral( int(data_list[0]))
     return_sum_list = []
-    for data_num in range(1,len(data_list) - 1):
-        return_sum_list.append(sum_adjacent_numbers(data_list[data_num]))
+    for data_num in range(len(data_list)):
+        if data_num == 0:
+            pass
+        else:
+            return_sum_list.append(sum_adjacent_numbers(data_spiral, data_list[data_num]))
 
     print(return_sum_list)
 
