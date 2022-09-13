@@ -1,3 +1,16 @@
+# File: Cipher.py
+# Description: This program takes in two phrases, encrypts the first, and decrypts the second
+# remaining line numbers
+# Student Name: Kirsten Richards
+# Student UT EID: KJR2599
+# Partner Name: Steven Campbell
+# Partner UT EID: SWC776
+# Course Name: CS 313E
+# Unique Number: 52520
+# Date Created: September 8, 2022
+# Date Last Modified: September 12, 2022
+
+
 from cgitb import small
 import math
 import sys
