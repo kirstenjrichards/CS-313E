@@ -114,13 +114,17 @@ def decrypt ( strng ):
  # The below block of code adds the contents of the original
  # 2d list into the new list rotated 90 degrees
 
-
-  decrypt_rows = smallest_square - 1
-  for rotate_rows in range(smallest_square):
-    decrypt_word = decrypt_list[decrypt_column]
-    for rotate_column in range(smallest_square):
-      rotate_list[rotate_column][rotate_rows] = decrypt_word[rotate_column]
-    decrypt_column -= 1
+  row = 0
+  rotate_col = smallest_square - 1
+  for rotate_column in range(smallest_square):
+    col = 0
+    rotate_row = 0
+    for rotate_rows in range(smallest_square):
+      rotate_list[row][col] = decrypt_list[rotate_row][rotate_col]
+      col += 1
+      rotate_row += 1
+    row += 1
+    rotate_col -= 1
 
 
   # The below block of code converts the rotated 2d list 
