@@ -77,10 +77,6 @@ def encrypt ( strng ):
 
   return encrypt_word
 
-
-#########################################################################
-
-
 # Input: strng is a string of 100 or less of upper case, lower case, 
 #        and digits
 # Output: function returns a decrypted string 
@@ -99,58 +95,45 @@ def decrypt ( strng ):
   for rows in range(smallest_square):
       decrypt_rows = []
       for column in range(smallest_square):
-        decrypt_rows.append(0)
+        decrypt_rows.append('s')
       decrypt_list.append(decrypt_rows)
-
   # The below block of code updates the empty list with 
   # the string input value and fills empty spaces with
   # an asterisk
-  strng_value = 0
-  for column in range(smallest_square):
-    for rows in range(smallest_square):
-      if strng_value >= input_len:
-        decrypt_list[column][rows] = '*'
-      else:
-        decrypt_list[column][rows] = strng[strng_value]
-        strng_value += 1
 
-  # The below block of code is designed to create an empty 
-  # list for the use of rotation
-  rotate_list = []
-  for column in range(smallest_square):
-      decrypt_column = []
-      for column in range(smallest_square):
-        decrypt_column.append(0)
-      rotate_list.append(decrypt_column)
-
-
- # The below block of code adds the contents of the original
- # 2d list into the new list rotated 90 degrees
-
+  number_of_stars = smallest_square**2 - len(strng)
+  row = smallest_square - 1
+  column = 0
+  for _ in range(number_of_stars):
+    decrypt_list[row][column] = '*'
+    row -= 1
+    if row == -1:
+      row = smallest_square - 1
+      column += 1
+  
+  column = decrypt_list[0].index('s')
   row = 0
-  rotate_col = smallest_square - 1
-  for rotate_column in range(smallest_square):
-    col = 0
-    rotate_row = 0
-    for rotate_rows in range(smallest_square):
-      rotate_list[row][col] = decrypt_list[rotate_row][rotate_col]
-      col += 1
-      rotate_row += 1
-    row += 1
-    rotate_col -= 1
-
-
-  # The below block of code converts the rotated 2d list 
-  # into a string omitting the asterisk
+  for character in range(len(strng)):
+    decrypt_list[row][column] = strng[character]
+    column += 1
+    if character == len(strng) - 1:
+      break
+    if column == smallest_square:
+      row += 1
+      column = decrypt_list[row].index('s')
+      
+  row = 0
+  column = smallest_square - 1
   decrypt_word = ''
-  for rows in range(smallest_square):
-    for column in range(smallest_square):
-      if rotate_list[rows][column] == '*':
-        pass
-      else:
-        decrypt_word += rotate_list[rows][column]
+  for i in range(smallest_square**2):
+    decrypt_word += decrypt_list[row][column]
+    row += 1
+    if row == smallest_square:
+      column -= 1
+      row = 0
 
-  return decrypt_word
+  return decrypt_word[0:smallest_square**2 - number_of_stars]
+
 
 def main():
   # read the strings P and Q from standard input
