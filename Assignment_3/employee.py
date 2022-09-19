@@ -16,7 +16,7 @@ class Employee:
         self.salary = kwargs['salary']
 
     def __str__(self):
-    # Add your code here!
+        return self.name, self.id, self.salary
 
 
 ############################################################
@@ -27,11 +27,22 @@ class Permanent_Employee :
         self.name = kwargs['name'] #access args index like array does
         self.id = kwargs['id']
         self.salary = kwargs['salary']
+        self.benefits = kwargs['benefits']
+        self.retirement = kwargs['retirement']
+        self.health_insurance = kwargs['health_insurance']
 
     def cal_salary(self):
+        if benefits == ['health_insurance']:
+            return salary * 0.9
+        if benefits == ['retirement']:
+            return salary * 0.8
+        if benefits == ['retirement', 'health_insurance']:
+            return salary * 0.7 
 
 
     def __str__(self):
+        return self.name, self.id, self.benefits, self.salary
+        
 
 ############################################################
 ############################################################
@@ -40,7 +51,16 @@ class Permanent_Employee :
 
 class Manager :
     def cal_salary(self):
+        bonus = 0 
+        if benefits == ['health_insurance']:
+            return salary * 0.9 + bonus
+        if benefits == ['retirement']:
+            return salary * 0.8 + bonus
+        if benefits == ['retirement', 'health_insurance']:
+            return salary * 0.7 + bonus
     def __str__(self):
+        return self.name, self.id, self.benefits, self.salary
+
 
 
 ############################################################
