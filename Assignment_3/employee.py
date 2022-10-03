@@ -12,7 +12,7 @@
 
 import sys
 class Employee:
-
+    # establishing arguments for variables of name, id, and salary to be used throughout 
     def __init__(self, **kwargs):
         self.name = kwargs['name'] #access args index like array does
         self.id = kwargs['id']
@@ -32,6 +32,7 @@ class Permanent_Employee(Employee):
         self.salary = kwargs['salary']
         self.benefits = kwargs['benefits']
 
+# calculating various salaries of different permanent employee levels 
     def cal_salary(self):
         if self.benefits == ['health_insurance']:
             return self.salary * 0.9
@@ -58,7 +59,7 @@ class Manager(Employee):
         self.id = kwargs['id']
         self.salary = kwargs['salary']
         self.bonus = kwargs['bonus']
-
+# manager salary is permanent employee salary + manager bonus 
     def cal_salary(self):
         return float(self.salary + self.bonus)
     def __str__(self):
@@ -79,7 +80,7 @@ class Temporary_Employee(Employee):
         self.id = kwargs['id']
         self.salary = kwargs['salary']
         self.hours = kwargs['hours']
-
+# temporary employee is salary type * hours 
     def cal_salary(self): 
         return float(self.salary * self.hours)
 
@@ -100,7 +101,7 @@ class Consultant(Temporary_Employee):
         self.salary = kwargs['salary']
         self.hours = kwargs['hours']
         self.travel = kwargs['travel']
-
+# special salary * regular employee salary
     def cal_salary(self):
         return float((self.salary * self.hours) + (self.travel * 1000))
 
@@ -123,7 +124,7 @@ class Consultant_Manager(Consultant, Manager):
         self.hours = kwargs['hours']
         self.travel = kwargs['travel']
         self.bonus = kwargs['bonus']
-
+# highest salary calculation of hourly manager salary + travel salary + 2 bonuses 
     def cal_salary(self):
         return float((self.salary * self.hours) + (self.travel * 1000) + self.bonus)
 
