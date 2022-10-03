@@ -1,17 +1,22 @@
 import time
 import sys
 
+from matplotlib.collections import BrokenBarHCollection
+
 
 # Input: v an integer representing the minimum lines of code and
 #        k an integer representing the productivity factor
 # Output: computes the sum of the series (v + v // k + v // k**2 + ...)
 #         returns the sum of the series
-def sum_series (v, k, x=1):
+def sum_series (v, k):
 
-  if(v == 0):
-    return 0
-  else:
-    return v + sum_series(v // k, k**x, x + 1)
+  sum = v
+  runs = k
+  while sum // runs != 0:
+    v += sum // runs
+    runs = runs * k
+
+  return v
 
 
 # Input: n an integer representing the total number of lines of code
@@ -26,12 +31,16 @@ def linear_search (n, k):
 # Output: returns v the minimum lines of code to write using binary search
 def binary_search (n, k):
 
-  target_lines = n 
-  while sum_series(n, k) > target_lines:
-    n -= 1
-  return n + 1
+  mid = n // 2 
 
+  if sum_series(mid, k) >= n:
+    return mid
+  
+  elif sum_series(mid, k) > n:
+    return binary_search(mid, k)
 
+  else:
+    return binary_search(mid, k)
 
 
 def main():
