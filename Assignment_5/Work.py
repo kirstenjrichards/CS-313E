@@ -43,13 +43,15 @@ def binary_search (n, k):
     mid = (start + end) // 2
 
     if sum_series(mid, k) < n:
-      start = mid + 1
-    
-    elif sum_series(mid, k) > n:
       end = mid - 1
+    
+    elif sum_series(mid, k) >= n:
+      start = mid + 1
     
     else:
       return mid
+
+  return mid
 
 
 def main():
