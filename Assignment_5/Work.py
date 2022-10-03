@@ -23,7 +23,10 @@ def sum_series (v, k):
 #        k an integer representing the productivity factor
 # Output: returns v the minimum lines of code to write using linear search
 def linear_search (n, k):
-  pass
+  v = 1
+  while sum_series(v, k) < n:
+    v += 1
+  return v
 
 
 # Input: n an integer representing the total number of lines of code
@@ -31,16 +34,24 @@ def linear_search (n, k):
 # Output: returns v the minimum lines of code to write using binary search
 def binary_search (n, k):
 
-  mid = n // 2 
+  start = 0
+  end = n
+  mid = 0
 
-  if sum_series(mid, k) >= n:
-    return mid
-  
-  elif sum_series(mid, k) > n:
-    return binary_search(mid, k)
+  while start <= end:
 
-  else:
-    return binary_search(mid, k)
+    mid = (start + end) // 2
+
+    if sum_series(mid, k) < n:
+      end = mid - 1
+    
+    elif sum_series(mid, k) >= n:
+      start = mid + 1
+    
+    else:
+      return mid
+
+  return mid
 
 
 def main():
