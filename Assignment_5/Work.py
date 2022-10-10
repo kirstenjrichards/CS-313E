@@ -14,7 +14,6 @@
 import time
 import sys
 
-
 # Input: v an integer representing the minimum lines of code and
 #        k an integer representing the productivity factor
 # Output: computes the sum of the series (v + v // k + v // k**2 + ...)
@@ -29,7 +28,6 @@ def sum_series (v, k):
 
   return v
 
-
 # Input: n an integer representing the total number of lines of code
 #        k an integer representing the productivity factor
 # Output: returns v the minimum lines of code to write using linear search
@@ -41,7 +39,6 @@ def linear_search (n, k):
     v += 1
   return v
 
-
 # Input: n an integer representing the total number of lines of code
 #        k an integer representing the productivity factor
 # Output: returns v the minimum lines of code to write using binary search
@@ -51,7 +48,7 @@ def binary_search (n, k):
   end = n #high
   mid = 0
 
-  while start <= end:
+  while start != end:
 
     mid = (start + end) // 2
     #it has to be mid value if sum_series is tested between values in array
@@ -65,7 +62,7 @@ def binary_search (n, k):
       start=mid+1 
   #if it doesn't pass any tests,  return middle value
     else:
-      return mid
+      end = mid - 1
 
   return mid
 
