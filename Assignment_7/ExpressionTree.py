@@ -52,19 +52,27 @@ class Tree (object):
     # creates the expression tree
     def create_tree (self, expr):
     
+
+
     # this function should evaluate the tree's expression
     # returns the value of the expression after being calculated
     def evaluate (self, aNode):
     
+
+
     # this function should generate the preorder notation of 
     # the tree's expression
     # returns a string of the expression written in preorder notation
     def pre_order (self, aNode):
+    
+
 
     # this function should generate the postorder notation of 
     # the tree's expression
     # returns a string of the expression written in postorder notation
     def post_order (self, aNode):
+    
+
 
 # you should NOT need to touch main, everything should be handled for you
 def main():
