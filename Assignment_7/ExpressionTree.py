@@ -40,7 +40,8 @@ class Stack (object):
 
 
     def __str__(self):
-        return str(self.stack)
+        for x in self.stack:
+            print(x.data)
 
 
 class Node (object):
@@ -59,38 +60,33 @@ class Tree (object):
     # creates the expression tree
     def create_tree (self, expr):
 
+        self.root = Node()
+        current_node = self.root
 
-    
+        for char in expr:
+            print(char)
+            if char == '(':
+                current_node.lChild = Node()
+                self.tree_stack.push(current_node)
+                current_node = current_node.lChild
+            elif char in operators:
+                current_node.data = char
+                self.tree_stack.push(current_node)
+                current_node.rChild = Node()
+                current_node = current_node.rChild
+            elif char == ')':
+                self.tree_stack.pop()
+            else:
+                current_node.data = char
+                self.tree_stack.pop()
+            
 
 
     # this function should evaluate the tree's expression
     # returns the value of the expression after being calculated
     def evaluate (self, aNode):
+        pass
 
-        current_node = Node()
-
-        for x in range(len(expr)):
-            current_tok = expr[x]
-
-            if current_tok == '(':
-                current_node.lChild = Node()
-                self.tree_stack.push(current_node)
-                current_node = current_node.lChild
-            
-            elif current_tok in operators:
-                current_node.data = current_tok
-                self.tree_stack.push(current_node)
-                current_node.rChild = Node()
-                current_node = current_node.rChild
-            
-            elif current_tok == ')':
-                self.tree_stack.pop()
-
-            else:
-                current_node.data = current_tok
-                self.tree_stack.pop()
-        
-    
 
     # this function should generate the preorder notation of 
     # the tree's expression
@@ -98,6 +94,15 @@ class Tree (object):
     def pre_order (self, aNode):
         operators = []
         operands = []
+
+        def getPriority(self, aNode):
+            if (aNode == '-' or aNode == '+'):
+                return 1 
+            elif (aNode == '*' or aNode == '/'):
+                return 2
+            elif aNode == '^':
+                return 3
+            return 0
 
         for i in range(len(aNode)):
             if (aNode[i] == '('):
@@ -122,12 +127,12 @@ class Tree (object):
 
                 operators.pop()
 
-            elif (not anOperator(aNode[i])):
+            elif ((aNode[i]) not in operators):
                 operands.append(aNode[i] + "")
 
 
             else:
-                while (len(operators)!=0 and priority(aNode[i]) <= priority(operators[-1])):
+                while (len(operators)!=0 and getPriority(aNode[i]) <= getPriority(operators[-1])):
                     operand1 = operands[-1]
                     operands.pop()
  
@@ -158,20 +163,11 @@ class Tree (object):
 
         return operands[-1]
 
-    
-
-
-        pass
-
 
     # this function should generate the postorder notation of 
     # the tree's expression
     # returns a string of the expression written in postorder notation
     def post_order (self, aNode):
-
-    
-
-
         pass
 
 
@@ -193,17 +189,6 @@ def main():
 
     # get the postfix version of the expression and print
     print("Postfix Expression:", tree.post_order(tree.root).strip())
-
-    print(tree.tree_stack)
-    
-    # evaluate the expression and print the result
-    # print(expr, "=", str(tree.evaluate(tree.root)))
-
-    # get the prefix version of the expression and print
-    # print("Prefix Expression:", tree.pre_order(tree.root).strip())
-
-    # get the postfix version of the expression and print
-    # print("Postfix Expression:", tree.post_order(tree.root).strip())
 
 
 if __name__ == "__main__":
