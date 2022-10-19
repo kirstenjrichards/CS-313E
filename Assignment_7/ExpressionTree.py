@@ -1,22 +1,13 @@
-#  File: ExpressionTree.py
-
-#  Description:
-
-#  Student Name:
-
-#  Student UT EID:
-
-#  Partner Name:
-
-#  Partner UT EID:
-
-#  Course Name: CS 313E
-
-#  Unique Number: 
-
-#  Date Created:
-
-#  Date Last Modified:
+# File: ExpressionTree.py
+# Description: This program takes in an expression creates an expression tree, evaluates the tree, and creates post/pre fix expressions
+# Student Name: Kirsten Richards
+# Student UT EID: KJR2599
+# Partner Name: Steven Campbell
+# Partner UT EID: SWC776
+# Course Name: CS 313E
+# Unique Number: 52520
+# Date Created: October 16, 2022
+# Date Last Modified: October 19, 2022
 
 import sys
 
@@ -27,7 +18,7 @@ class Stack (object):
         self.stack = []
 
     def push(self, data):
-        self.stack.append (data)
+        self.stack.append(data)
 
     def pop(self):
         if(not self.is_empty()):
@@ -61,114 +52,98 @@ class Tree (object):
     def create_tree (self, expr):
 
         self.root = Node()
+
         current_node = self.root
 
-        for char in expr:
-            print(char)
-            if char == '(':
+        expr = expr.split(' ')
+        for x in range(len(expr)):
+            current_tok = expr[x]
+
+            if current_tok == '(':
                 current_node.lChild = Node()
                 self.tree_stack.push(current_node)
                 current_node = current_node.lChild
-            elif char in operators:
-                current_node.data = char
+            
+            elif current_tok in operators:
+                current_node.data = current_tok
                 self.tree_stack.push(current_node)
                 current_node.rChild = Node()
                 current_node = current_node.rChild
-            elif char == ')':
-                self.tree_stack.pop()
+            
+            elif current_tok == ')':
+                if (node := self.tree_stack.pop()) is not None:
+                    current_node = node
             else:
-                current_node.data = char
-                self.tree_stack.pop()
+                if float(current_tok) % 1 == 0:
+                    current_node.data = int(current_tok)
+                else:
+                    current_node.data = float(current_tok)
+                current_node = self.tree_stack.pop()
             
 
 
     # this function should evaluate the tree's expression
     # returns the value of the expression after being calculated
     def evaluate (self, aNode):
-        pass
-
+        if aNode.lChild == None and aNode.rChild == None:
+            return aNode.data
+        elif aNode.data == '**':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child ** right_child)
+        elif aNode.data == '%':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child % right_child)
+        elif aNode.data == '//':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child // right_child)
+        elif aNode.data == '+':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child + right_child)
+        elif aNode.data == '-':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child - right_child)
+        elif aNode.data == '*':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child * right_child)
+        elif aNode.data == '/':
+            left_child = self.evaluate(aNode.lChild)
+            right_child = self.evaluate(aNode.rChild)
+            return float(left_child / right_child)
 
     # this function should generate the preorder notation of 
     # the tree's expression
     # returns a string of the expression written in preorder notation
     def pre_order (self, aNode):
-        operators = []
-        operands = []
 
-        def getPriority(self, aNode):
-            if (aNode == '-' or aNode == '+'):
-                return 1 
-            elif (aNode == '*' or aNode == '/'):
-                return 2
-            elif aNode == '^':
-                return 3
-            return 0
+        if aNode != None:
+            expression = str(aNode.data)
+            if aNode.lChild != None:
+                expression += ' ' + str(self.pre_order(aNode.lChild))
+            if aNode.rChild != None:
+                expression += ' ' + str(self.pre_order(aNode.rChild))
 
-        for i in range(len(aNode)):
-            if (aNode[i] == '('):
-                operators.append(aNode[i])
-
-            elif (aNode[i] == ')'):
-                while (len(operators)!=0 and operators[-1] != '('):
-                # operand 1
-                    operand1 = operands[-1]
-                    operands.pop()
- 
-                # operand 2
-                    operand2 = operands[-1]
-                    operands.pop()
- 
-                # operator
-                    operand3 = operators[-1]
-                    operators.pop()
-
-                    total = operand1 + operand2 + operand3
-                    operands.append()
-
-                operators.pop()
-
-            elif ((aNode[i]) not in operators):
-                operands.append(aNode[i] + "")
-
-
-            else:
-                while (len(operators)!=0 and getPriority(aNode[i]) <= getPriority(operators[-1])):
-                    operand1 = operands[-1]
-                    operands.pop()
- 
-                    operand2 = operands[-1]
-                    operands.pop()
- 
-                    operand3 = operators[-1]
-                    operators.pop()
- 
-                    total = operand1 + operand2 + operand3
-                    operands.append(total)
-                operators.append(aNode[i])
-
-
-        while (len(operators)!=0):
-            operand1 = operands[-1]
-            operands.pop()
- 
-            operand2 = operands[-1]
-            operands.pop()
- 
-            operand3 = operators[-1]
-            operators.pop()
- 
-            total = operand1 + operand2 + operand3
-            operands.append(total)
- 
-
-        return operands[-1]
+        return expression
 
 
     # this function should generate the postorder notation of 
     # the tree's expression
     # returns a string of the expression written in postorder notation
     def post_order (self, aNode):
-        pass
+
+        if Node == type(aNode):
+            expression = str(aNode.data)
+            if aNode.rChild != None:
+                expression = str(self.post_order(aNode.rChild) + ' ' + expression)
+            if aNode.lChild != None:
+                expression = str(self.post_order(aNode.lChild) + ' ' + expression)
+
+        return expression
 
 
 # you should NOT need to touch main, everything should be handled for you
@@ -180,7 +155,6 @@ def main():
     tree = Tree()
     tree.create_tree(expr)
 
-    
     # evaluate the expression and print the result
     print(expr, "=", str(tree.evaluate(tree.root)))
 
