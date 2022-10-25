@@ -1,23 +1,14 @@
-#  File: TestBinaryTree.py
-
-#  Description:
-
-#  Student Name:
-
-#  Student UT EID:
-
-#  Partner Name:
-
-#  Partner UT EID:
-
-#  Course Name: CS 313E
-
-#  Unique Number:
-
-#  Date Created:
-
-#  Date Last Modified:
-
+# File: TestBinaryTree.py
+# Description: This program takes in a binary tree and tests it for the range of values in the tree, the level in which nodes are at,
+# the left side view of the tree, and the sum of all leaf node values
+# Student Name: Kirsten Richards
+# Student UT EID: KJR2599
+# Partner Name: Steven Campbell
+# Partner UT EID: SWC776
+# Course Name: CS 313E
+# Unique Number: 52520
+# Date Created: October 23, 2022
+# Date Last Modified: October 24, 2022
 
 import sys
 
@@ -125,7 +116,20 @@ class Tree(object):
         
     # Returns a list of nodes at a given level from left to right
     def get_level(self, level):
-        pass
+        lst_level = []
+        if (self == None) or level > self.get_height():
+            return []
+        lst_level.append(self.root)
+
+        for i in range(level):
+            for n in range(len(lst_level)):
+                current = lst_level[0]
+                if current.lChild != None:
+                    lst_level.append(current.lChild)
+                if current.rChild != None:
+                    lst_level.append(current.rChild)
+                lst_level.pop(0)
+        return lst_level
 
 
     # Returns the list of the node that you see from left side
