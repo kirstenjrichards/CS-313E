@@ -84,27 +84,6 @@ class LinkedList (object):
         n = (rot_amt * t) % links
         res = self.copy_list()
 
-        if n == 0 or links <= 1:
-            # the rotated result is the same as the current list
-            return res
-    
-        slow = res.first
-        fast = res.first
-
-        for i in range(n):
-            fast = fast.next
-
-        while fast.next:
-            slow = slow.next
-            fast = fast.next
-
-        # slow == n - 1
-        slownxt = slow.next
-
-        slow.next = None
-        fast.next = res.first
-        res.first = slownxt
-
         return res
 
 # DO NOT CHANGE MAIN
