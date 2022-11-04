@@ -160,8 +160,31 @@ class ImageGraph:
     def print_adjacency_matrix(self):
         print("Adjacency matrix:")
 
-        raise NotImplementedError("Remove this exception and print the adjacency matrix here.")
+        index = []
+        for node in range(len(self.nodes)):
+          x = self.nodes[node].x 
+          y = self.nodes[node].y 
+          row = self.nodes[node].edges
 
+          index.append(row)
+
+        matrix = []
+        for row in range(len(index)):
+          position = 0
+          row_list = []
+          for x in range(len(index)):
+            if position in index[row]:
+              row_list.append(1)
+              position += 1
+            else:
+              row_list.append(0)
+              position += 1
+          matrix.append(row_list)
+        
+        for x in range(len(matrix)):
+          for y in range(len(matrix[x])):
+            print(matrix[x][y], end = '')
+          print()
         # empty line afterwards
         print()
 
@@ -174,10 +197,33 @@ class ImageGraph:
         self.reset_visited()
         # print initial state
         print("Starting BFS; initial state:")
+
+        queue = Queue()
+
         self.print_image()
 
-        raise NotImplementedError("Remove this exception and implement the bfs algorithm here.")
+        (self.nodes[start_index]).visited = True
+        (self.nodes[start_index]).color = color
+        self.print_image()
 
+        init_color = (self.nodes[start_index]).prev_color
+        queue.enqueue(start_index)
+
+        while (not queue.is_empty()):
+          n1 = queue.dequeue()
+
+          n2 = self.get_adj_unvisited_node(n1, init_color)
+          while (n2 != -1):
+            (self.nodes[n2]).visited = True
+            queue.enqueue (n2)
+            (self.nodes[n2]).set_color(color)
+            self.print_image()
+            n2 = self.get_adj_unvisited_node(n1, init_color)
+
+        nVert = len (self.nodes)
+        for i in range (nVert):
+          (self.nodes[i]).visited = False
+        
 
     # implement your dfs algorithm here. Call print_image() after coloring a node
     # Input: graph is the graph containing the nodes
@@ -188,9 +234,34 @@ class ImageGraph:
         self.reset_visited()
         # print initial state
         print("Starting DFS; initial state:")
+
+        stack = Stack()
+        ver_list = []
+
+        self.print_image()
+        (self.nodes[start_index]).visited = True
+        (self.nodes[start_index]).color = color
         self.print_image()
 
-        raise NotImplementedError("Remove this exception and implement the dfs algorithm here.")
+        init_color = (self.nodes[start_index]).prev_color
+        ver_list.append(self.nodes[start_index])
+        stack.push (start_index)
+
+        while (not stack.is_empty()):
+          
+          u = self.get_adj_unvisited_node (stack.peek(), init_color)
+          if (u == -1):
+            u = stack.pop()
+          else:
+            (self.nodes[u]).visited = True
+            ver_list.append(self.nodes[u])
+            stack.push(u)
+            (self.nodes[u]).set_color(color)
+            self.print_image()
+
+        nVert = len (self.nodes)
+        for i in range (nVert):
+          (self.nodes[i]).visited = False
 
 
 def create_graph(data):
