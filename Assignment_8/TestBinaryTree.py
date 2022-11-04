@@ -20,6 +20,7 @@
 
 
 import sys
+from turtle import left
 
 
 class Node (object):
@@ -125,23 +126,31 @@ class Tree(object):
         
     # Returns a list of nodes at a given level from left to right
     def get_level(self, level):
-        pass
+        level_list = []
+        if self.root == None or level > self.get_height():
+            return []
+        level_list.append(self.root)
 
+        for moves in range(level):
+            for nodes in range(len(level_list)):
+                curr = level_list[0]
+                if curr.lChild != None:
+                    level_list.append(curr.lChild)
+                if curr.rChild != None:
+                    level_list.append(curr.rChild)
+                level_list.pop(0)
+        return level_list
+        
 
     # Returns the list of the node that you see from left side
     # The order of the output should be from top to down
     def left_side_view(self):
         left_list = []
-        curr = self.root
-        while curr != None:
-            left_list.append(curr.data)
-            if curr.lChild != None:
-                curr = curr.lChild
-            elif curr.rChild != None:
-                curr = curr.rChild
-            else:
-                curr = None
-
+        height = self.get_height()
+        for levels in range(height):
+            left_list = self.get_level(levels)
+            left_list.append((left_list[0]).data)
+    
         return left_list
 
 
