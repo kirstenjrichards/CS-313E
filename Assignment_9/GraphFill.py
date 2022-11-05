@@ -135,6 +135,7 @@ class ImageGraph:
     def __init__(self, image_size):
         self.nodes = []
         self.image_size = image_size
+        self.matrix = None
 
     # prints the image formed by the nodes on the command line
     def print_image(self):
@@ -180,6 +181,7 @@ class ImageGraph:
               row_list.append(0)
               position += 1
           matrix.append(row_list)
+          self.matrix = matrix
         
         for x in range(len(matrix)):
           for y in range(len(matrix[x])):
@@ -187,6 +189,13 @@ class ImageGraph:
           print()
         # empty line afterwards
         print()
+
+    def get_adj_unvisited_node(self, v, color):
+      nVert = len (self.nodes)
+      for i in range (nVert):
+        if (self.matrix[v][i] > 0) and (not (self.nodes[i]).visited) and (self.nodes[i]).color == color:
+          return i
+      return -1
 
     # implement your bfs algorithm here. Call print_image() after coloring a node
     # Input: graph is the graph containing the nodes
@@ -216,7 +225,7 @@ class ImageGraph:
           while (n2 != -1):
             (self.nodes[n2]).visited = True
             queue.enqueue (n2)
-            (self.nodes[n2]).set_color(color)
+            (self.nodes[n2]).color = color
             self.print_image()
             n2 = self.get_adj_unvisited_node(n1, init_color)
 
