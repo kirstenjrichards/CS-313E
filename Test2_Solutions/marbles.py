@@ -33,6 +33,43 @@ import sys
 
     
 def get_marble_list(marbles):
+    removal = True
+    while removal == True:
+        removal = False
+        i = 0
+        while len(marbles) != 0 and i < len(marbles):
+            marble1 = marbles[i]
+            if marble1 < 0 and i > 0:
+                j = i - 1
+                marble2 = marbles[j]
+                if marble2 > 0:
+                    removal = True
+                    if marble2 ** 2 > marble1 ** 2:
+                        marbles.pop(i)
+                        i -= 1
+                    elif marble2 ** 2 == marble1 ** 2:
+                        marbles.pop(i)
+                        marbles.pop(j)
+                        i -= 2
+                    else:
+                        marbles.pop(j)
+                        i -= 1
+            elif marble1 > 0 and i < len(marbles) - 1:
+                j = i + 1
+                marble2 = marbles[j]
+                if marble2 < 0:
+                    removal = True
+                    if marble2 ** 2 > marble1 ** 2:
+                        marbles.pop(i)
+                        i -= 1
+                    elif marble2 ** 2 == marble1 ** 2:
+                        marbles.pop(i)
+                        marbles.pop(i)
+                        i -= 2
+                    else:
+                        marbles.pop(j)
+                        i -= 1
+            i += 1
     return marbles
                         
                 

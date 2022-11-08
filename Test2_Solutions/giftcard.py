@@ -23,10 +23,20 @@ import sys
 #		  Return -1 if he can't find a way to order deserts in this way. 
 def max_giftcard_value(desert_list, total):
 	sumsList = (summationList(desert_list,total))
-	
+	sumsList.sort()
+	if(len(sumsList)==0):
+		return -1
+	else:
+		return sumsList[-1]	
 
 def summationList(desert_list,total,p=[],sumsList=[]):
-
+	s = sum(p)
+	if(s==total):
+		sumsList.append(len(p))
+	for x in range(len(desert_list)):
+		n = desert_list[x]
+		rest = desert_list[x+1:]
+		summationList(rest,total,p+[n])
 	return sumsList
 
 

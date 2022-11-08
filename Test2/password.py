@@ -1,6 +1,6 @@
-#  File: Secret.py
+#  File: password.py
 
-#  Description: Rotates a linked list to the right (clockwise) rot places times number of times 
+#  Description: Rotates a linked list to the left (counter-clockwise) ``r_step'' steps ``times'' times
 
 #  Student Name:
 
@@ -8,7 +8,7 @@
 
 #  Course Name: CS 313E
 
-#  Unique Number: 
+#  Unique Number: 86610
 
 import sys
 
@@ -25,7 +25,7 @@ class LinkedList (object):
 
     # helper function to add an item at the end of a list
     # you can use this if you want, but do not delete it
-    def insert_last (self, data): 
+    def insert_last (self, data):
         newLink = Link(data)
         current = self.first
 
@@ -76,12 +76,32 @@ class LinkedList (object):
             res += "  ".join(map(str, curr_items))
         return res
 
+    def delete_link(self, data):
+        previous = self.first
+        current = self.first
+
+        if current == None:
+            return None
+
+        while current.data != data:
+            if current.next == None:
+                return None
+            else:
+                previous = current
+                current = current.next
+
+        if current == self.first:
+            self.first = self.first.next
+        else:
+            previous.next = current.next
+
+        return current
     # COMPLETE THIS FUNCTION
     # return a new linked list that results from the rotation
     # do not change this linked list
-    def rotate(self, rot_amt, t):
+    def rotate(self, r_step, times):
         links = self.num_links()
-        n = (rot_amt * t) % links
+        n = (r_step * times) % links
         res = self.copy_list()
 
         if n == 0 or links <= 1:
@@ -107,19 +127,20 @@ class LinkedList (object):
 
         return res
 
+
 # DO NOT CHANGE MAIN
 def main():
     ll = LinkedList()
-    
+
     data = list(map(int, input().split()))
 
     # populate linked list with data
     for d in data:
         ll.insert_last(d)
 
-    rot_amt, t = list(map(int, input().split()))
+    r_step, times = list(map(int, input().split()))
 
-    rotated = ll.rotate(rot_amt, t)
+    rotated = ll.rotate(r_step, times)
     # print the original list
     print(ll)
     # print the new list that results from calling rotate()

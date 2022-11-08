@@ -1,13 +1,14 @@
-#  File: GraphFill.py
-#  Description:
-#  Student Name:
-#  Student UT EID:
-#  Partner Name:
-#  Partner UT EID:
-#  Course Name: CS 313E
-#  Unique Number:
-#  Date Created:
-#  Date Last Modified:
+# File: TestBinaryTree.py
+# Description: This program takes in a binary tree and tests it for the range of values in the tree, the level in which nodes are at,
+# the left side view of the tree, and the sum of all leaf node values
+# Student Name: Kirsten Richards
+# Student UT EID: KJR2599
+# Partner Name: Steven Campbell
+# Partner UT EID: SWC776
+# Course Name: CS 313E
+# Unique Number: 52520
+# Date Created: November 4, 2022
+# Date Last Modified: November 7, 2022
 
 import os
 import sys
@@ -207,32 +208,25 @@ class ImageGraph:
         # print initial state
         print("Starting BFS; initial state:")
 
+        self.print_image()
+
         queue = Queue()
 
+        node1 = self.nodes[start_index]
+        old_color = node1.color
+        node1.visit_and_set_color(color)
+        queue.enqueue(node1)
         self.print_image()
 
-        (self.nodes[start_index]).visited = True
-        (self.nodes[start_index]).color = color
-        self.print_image()
-
-        init_color = (self.nodes[start_index]).prev_color
-        queue.enqueue(start_index)
-
-        while (not queue.is_empty()):
-          n1 = queue.dequeue()
-
-          n2 = self.get_adj_unvisited_node(n1, init_color)
-          while (n2 != -1):
-            (self.nodes[n2]).visited = True
-            queue.enqueue (n2)
-            (self.nodes[n2]).color = color
-            self.print_image()
-            n2 = self.get_adj_unvisited_node(n1, init_color)
-
-        nVert = len (self.nodes)
-        for i in range (nVert):
-          (self.nodes[i]).visited = False
-        
+        while not queue.is_empty():
+          node = queue.dequeue()
+          for x in node.edges:
+            edge_node = self.nodes[x]
+            if edge_node.visited == False and edge_node.color == old_color:
+              queue.enqueue(edge_node)
+              edge_node.visit_and_set_color(color)
+              self.print_image()
+          
 
     # implement your dfs algorithm here. Call print_image() after coloring a node
     # Input: graph is the graph containing the nodes
@@ -244,33 +238,16 @@ class ImageGraph:
         # print initial state
         print("Starting DFS; initial state:")
 
-        stack = Stack()
-        ver_list = []
+        node1 = self.nodes[start_index]
+        old_color = node1.color
 
+        node1.visit_and_set_color(color)
         self.print_image()
-        (self.nodes[start_index]).visited = True
-        (self.nodes[start_index]).color = color
-        self.print_image()
+        for x in node1.edges:
+          node = self.nodes[x]
+          if node.color == old_color and not node.visited:
+            self.dfs(x, color)
 
-        init_color = (self.nodes[start_index]).prev_color
-        ver_list.append(self.nodes[start_index])
-        stack.push (start_index)
-
-        while (not stack.is_empty()):
-          
-          u = self.get_adj_unvisited_node (stack.peek(), init_color)
-          if (u == -1):
-            u = stack.pop()
-          else:
-            (self.nodes[u]).visited = True
-            ver_list.append(self.nodes[u])
-            stack.push(u)
-            (self.nodes[u]).set_color(color)
-            self.print_image()
-
-        nVert = len (self.nodes)
-        for i in range (nVert):
-          (self.nodes[i]).visited = False
 
 
 def create_graph(data):
