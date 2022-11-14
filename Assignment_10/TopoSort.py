@@ -220,11 +220,11 @@ class Graph(object):
         # this function should return a boolean and not print the result
 
     def has_cycle(self):
-        verts = len(self.Vertices)
-        for i in range(0, verts):
+        hasverts = len(self.Vertices)
+        for i in range (0, hasverts):
             cyclic = self.dfs(i)
             if cyclic is True:
-                return True 
+                return True
         return False
 
     # do the breadth first search in a graph
@@ -277,23 +277,13 @@ class Graph(object):
 
     # return a list of vertices after a topological sort
     # this function should not print the list
-    def toposort(self):
-        if(len(self.vertices) > 0):
-            vertex_queue = Queue()
-            vertex_index = 0 
-            # loop and collect all vertices with zero in_degree
-            while(True):
-                vertex = self.vertices[vertex_index]
-                if vertex.in_degree == 0:
-                    vertex_queue.enqueue(vertex)
-                    self.delete_vertex(vertex.label)
-                    if len(self.vertices) == 0:
-                        break
-                else:
-                    vertex_index += 1
-                if(vertex_index == len(self.vertices)):
-                    vertex_index = 0
-            return [vertex.label for vertex in vertex_queue.queue]
+    def toposort (self):
+        topoList = []
+        visited = [False] * self.adjMat
+        for i in range(self.adjMat):
+            if visited[i] == False:
+                self.dfs(i, v)
+        return topoList
 
     # given a label get the index of a vertex
     def get_index2(self, label, VerticesCopy):
