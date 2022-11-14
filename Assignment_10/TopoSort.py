@@ -196,7 +196,24 @@ class Graph(object):
         # this function should return a boolean and not print the result
 
     def has_cycle(self):
-        pass
+        if len(self.Vertices) > 0:
+            stack = Stack()
+            vertex_index = 0
+            self.Vertices[vertex_index].visited = True
+            stack.push(vertex_index)
+            while not stack.is_empty():
+                next_vertex = self.get_adj_unvisited_vertex(stack.peek())
+                if next_vertex == -1:
+                    next_vertex = stack.pop()
+                else:
+                    self.Vertices[next_vertex].visited = True
+                    stack.push(next_vertex)
+                    for i in range(len(self.Vertices)):
+                        if self.adjMat[next_vertex][i] != 0:
+                            if i in stack.stack:
+                                return True
+            return False
+        return False
 
     # do the breadth first search in a graph
     def bfs(self, v):
@@ -246,11 +263,22 @@ class Graph(object):
     # return a list of vertices after a topological sort
     # this function should not print the list
     def toposort(self):
-        topoList = []
-
-# Complete it!
-
-        return topoList
+        if(len(self.vertices) > 0):
+            vertex_queue = Queue()
+            vertex_index = 0 
+            # loop and collect all vertices with zero in_degree
+            while(True):
+                vertex = self.vertices[vertex_index]
+                if vertex.in_degree == 0:
+                    vertex_queue.enqueue(vertex)
+                    self.delete_vertex(vertex.label)
+                    if len(self.vertices) == 0:
+                        break
+                else:
+                    vertex_index += 1
+                if(vertex_index == len(self.vertices)):
+                    vertex_index = 0
+            return [vertex.label for vertex in vertex_queue.queue]
 
     # given a label get the index of a vertex
     def get_index2(self, label, VerticesCopy):
