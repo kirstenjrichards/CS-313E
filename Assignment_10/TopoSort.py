@@ -31,6 +31,11 @@ class Stack(object):
     def __str__(self):
         return self.stack
 
+    def copy(self):
+        new_stack = Stack()
+        new_stack.stack = self.stack[:]
+        return new_stack
+
 
 class Queue(object):
     def __init__(self):
@@ -55,11 +60,23 @@ class Queue(object):
     def size(self):
         return (len(self.queue))
 
+    def __str__(self):
+        return self.queue
+    
+    def get_next_item(self):
+        if self.size() > 0:
+            return self.queue[0]
+        return None
+
+    def size (self):
+        return len (self.queue)
+
 
 class Vertex(object):
     def __init__(self, label):
         self.label = label
         self.visited = False
+        self._in_degree = 0
 
     # determine if a vertex was visited
     def was_visited(self):
@@ -94,6 +111,9 @@ class Graph(object):
             if (label == (self.Vertices[i]).get_label()):
                 return i
         return -1
+
+    def get_vertices (self):
+        return self.vertices
 
     # add a Vertex with a given label to the graph
     def add_vertex(self, label):
@@ -131,6 +151,10 @@ class Graph(object):
                     not (self.Vertices[i]).was_visited()):
                 return i
         return -1
+
+    def reset_visits(self):
+        for i in range(len(self.vertices)):
+            self.vertices[i].visited = False
 
     # return an adjacent vertex  to vertex v (index)
     def get_adj_vertexes(self, v):
@@ -196,23 +220,11 @@ class Graph(object):
         # this function should return a boolean and not print the result
 
     def has_cycle(self):
-        if len(self.Vertices) > 0:
-            stack = Stack()
-            vertex_index = 0
-            self.Vertices[vertex_index].visited = True
-            stack.push(vertex_index)
-            while not stack.is_empty():
-                next_vertex = self.get_adj_unvisited_vertex(stack.peek())
-                if next_vertex == -1:
-                    next_vertex = stack.pop()
-                else:
-                    self.Vertices[next_vertex].visited = True
-                    stack.push(next_vertex)
-                    for i in range(len(self.Vertices)):
-                        if self.adjMat[next_vertex][i] != 0:
-                            if i in stack.stack:
-                                return True
-            return False
+        verts = len(self.Vertices)
+        for i in range(0, verts):
+            cyclic = self.dfs(i)
+            if cyclic is True:
+                return True 
         return False
 
     # do the breadth first search in a graph
@@ -260,6 +272,9 @@ class Graph(object):
         self.adjMat.pop(idx)
         self.Vertices.pop(idx)
 
+    def delete_directed_edge(self, start_index, end_index):
+        self.adj_matrix[start_index][end_index] = 0
+
     # return a list of vertices after a topological sort
     # this function should not print the list
     def toposort(self):
@@ -297,6 +312,28 @@ class Graph(object):
         adjMatCopy.pop(idx)
         VerticesCopy.pop(idx)
 
+    def __str__(self):
+        num_vertices = len(self.vertices)
+        total_str = ""
+        for i in range(num_vertices):
+            for j in range(num_vertices):
+                total_str += f"{self.adj_matrix[i][j]} "
+            total_str += "\n"
+        return total_str[:-2]
+
+    def get_neighbors (self, vertex_label):
+        neighbors = []
+        vertex_index = self.get_index(vertex_label)
+        for i in range(len(self.vertices[vertex_index])):
+            if self.vertices[vertex_index][i] != 0:
+                neighbors.append(self.vertices[vertex_index][i])
+        return neighbors
+
+    def get_in_degree(self, vertex_label):
+        vertex_index = self.get_index(vertex_label)
+        in_degree = sum([self.adj_matrix[i][vertex_index] for i in range(len(self.vertices))])
+        return in_degree
+
 
 def main():
     # create a Graph object
@@ -330,6 +367,8 @@ def main():
 
         theGraph.add_directed_edge(start, finish, 1)
 
+        theGraph.add_directed_edge(start, finish, 1)
+
     # print(num_edges)
     # test if a directed graph has a cycle
     if (theGraph.has_cycle()):
@@ -343,5 +382,4 @@ def main():
         print("\nList of vertices after toposort")
         print(vertex_list)
 
-    
 main()
