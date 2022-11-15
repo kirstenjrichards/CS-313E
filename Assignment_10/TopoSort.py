@@ -278,11 +278,11 @@ class Graph(object):
     # return a list of vertices after a topological sort
     # this function should not print the list
     def toposort (self):
+        visited = [False] * self.Vertices
         topoList = []
-        visited = [False] * self.adjMat
-        for i in range(self.adjMat):
+        for i in reversed(range(self.Vertices)):
             if visited[i] == False:
-                self.dfs(i, v)
+                self.dfs(i, visited, topoList)
         return topoList
 
     # given a label get the index of a vertex
