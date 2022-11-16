@@ -1,3 +1,14 @@
+# File: TopoSort.py
+# Description: This program takes in input and perfroms a topographical sort
+# Student Name: Kirsten Richards
+# Student UT EID: KJR2599
+# Partner Name: Steven Campbell
+# Partner UT EID: SWC776
+# Course Name: CS 313E
+# Unique Number: 52520
+# Date Created: November 14, 2022
+# Date Last Modified: November 16, 2022
+
 import sys
 
 
@@ -31,11 +42,6 @@ class Stack(object):
     def __str__(self):
         return self.stack
 
-    def copy(self):
-        new_stack = Stack()
-        new_stack.stack = self.stack[:]
-        return new_stack
-
 
 class Queue(object):
     def __init__(self):
@@ -60,23 +66,11 @@ class Queue(object):
     def size(self):
         return (len(self.queue))
 
-    def __str__(self):
-        return self.queue
-    
-    def get_next_item(self):
-        if self.size() > 0:
-            return self.queue[0]
-        return None
-
-    def size (self):
-        return len (self.queue)
-
 
 class Vertex(object):
     def __init__(self, label):
         self.label = label
         self.visited = False
-        self._in_degree = 0
 
     # determine if a vertex was visited
     def was_visited(self):
@@ -95,6 +89,7 @@ class Graph(object):
     def __init__(self):
         self.Vertices = []  # a list of vertex objects
         self.adjMat = []  # adjacency matrix of edges
+        self.not_from = []
 
     # check if a vertex is already in the graph
     def has_vertex(self, label):
@@ -112,9 +107,6 @@ class Graph(object):
                 return i
         return -1
 
-    def get_vertices (self):
-        return self.vertices
-
     # add a Vertex with a given label to the graph
     def add_vertex(self, label):
         if (self.has_vertex(label)):
@@ -122,7 +114,7 @@ class Graph(object):
 
         # add vertex to the list of vertices
         self.Vertices.append(Vertex(label))
-
+        self.not_from.append(self.Vertices[-1])
         # add a new column in the adjacency matrix
         nVert = len(self.Vertices)
         for i in range(nVert - 1):
@@ -135,8 +127,12 @@ class Graph(object):
         self.adjMat.append(new_row)
 
     # add weighted directed edge to graph
+
     def add_directed_edge(self, start, finish, weight=1):
         self.adjMat[start][finish] = weight
+        if self.Vertices[finish] in self.not_from:
+            self.not_from.remove(self.Vertices[finish])
+
 
     # add weighted undirected edge to graph
     def add_undirected_edge(self, start, finish, weight=1):
@@ -151,10 +147,6 @@ class Graph(object):
                     not (self.Vertices[i]).was_visited()):
                 return i
         return -1
-
-    def reset_visits(self):
-        for i in range(len(self.vertices)):
-            self.vertices[i].visited = False
 
     # return an adjacent vertex  to vertex v (index)
     def get_adj_vertexes(self, v):
@@ -183,7 +175,6 @@ class Graph(object):
 
         # mark the vertex v as visited and push it on the stack
         (self.Vertices[v]).visited = True
-        # print(self.Vertices[v])
         theStack.push(v)
 
         # visit the other vertices according to depth
@@ -220,12 +211,13 @@ class Graph(object):
         # this function should return a boolean and not print the result
 
     def has_cycle(self):
-        hasverts = len(self.Vertices)
-        for i in range (0, hasverts):
-            cyclic = self.dfs(i)
-            if cyclic is True:
+        for i in range(len(self.Vertices)):
+            if self.dfs(i):
                 return True
         return False
+
+
+
 
     # do the breadth first search in a graph
     def bfs(self, v):
@@ -272,17 +264,36 @@ class Graph(object):
         self.adjMat.pop(idx)
         self.Vertices.pop(idx)
 
-    def delete_directed_edge(self, start_index, end_index):
-        self.adj_matrix[start_index][end_index] = 0
+    # function that does a depth first search from a start vertex and adjusts level_count if v is
+    # currently on a higher level than its edge. Recursive call on the edge to adjust subsequent edges
+    def topo_helper(self, v, levels):
+        for edge in self.get_adj_vertexes(v):
+            if levels[v] >= levels[edge]:
+                levels[edge] = levels[v] + 1
+                levels = self.topo_helper(edge, levels)
+        return levels
+
 
     # return a list of vertices after a topological sort
     # this function should not print the list
-    def toposort (self):
-        visited = [False] * self.Vertices
+    def toposort(self):
         topoList = []
-        for i in reversed(range(self.Vertices)):
-            if visited[i] == False:
-                self.dfs(i, visited, topoList)
+        level_count = [0] * len(self.Vertices)
+        # calling topo_helper for root vertexes
+        for root_vert in self.not_from:
+            level_count = self.topo_helper(self.get_index(root_vert.label), level_count)
+
+        # finding every vertex on a given level, alphebetically sorting the level, and adding each
+        # ordered vertex to the topoList
+        for count in range(0, max(level_count) + 1):
+            level_list = []
+            for vert in range(len(level_count)):
+                if level_count[vert] == count:
+                    level_list.append(self.Vertices[vert].label)
+                    level_list.sort()
+            for vert in level_list:
+                topoList.append(vert)
+# Complete it!
         return topoList
 
     # given a label get the index of a vertex
@@ -301,28 +312,6 @@ class Graph(object):
             row.pop(idx)
         adjMatCopy.pop(idx)
         VerticesCopy.pop(idx)
-
-    def __str__(self):
-        num_vertices = len(self.vertices)
-        total_str = ""
-        for i in range(num_vertices):
-            for j in range(num_vertices):
-                total_str += f"{self.adj_matrix[i][j]} "
-            total_str += "\n"
-        return total_str[:-2]
-
-    def get_neighbors (self, vertex_label):
-        neighbors = []
-        vertex_index = self.get_index(vertex_label)
-        for i in range(len(self.vertices[vertex_index])):
-            if self.vertices[vertex_index][i] != 0:
-                neighbors.append(self.vertices[vertex_index][i])
-        return neighbors
-
-    def get_in_degree(self, vertex_label):
-        vertex_index = self.get_index(vertex_label)
-        in_degree = sum([self.adj_matrix[i][vertex_index] for i in range(len(self.vertices))])
-        return in_degree
 
 
 def main():
@@ -357,8 +346,6 @@ def main():
 
         theGraph.add_directed_edge(start, finish, 1)
 
-        theGraph.add_directed_edge(start, finish, 1)
-
     # print(num_edges)
     # test if a directed graph has a cycle
     if (theGraph.has_cycle()):
@@ -372,4 +359,5 @@ def main():
         print("\nList of vertices after toposort")
         print(vertex_list)
 
+    
 main()
